@@ -3,7 +3,9 @@ import localFont from "next/font/local";
 import React from "react";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import NavBar from "@/components/ui/navigation/navbar";
+import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const inter = localFont({
   src: "./fonts/InterVF.ttf",
@@ -22,21 +24,32 @@ export const metadata: Metadata = {
   description: "A better version of Stack Overflow.",
 };
 
-export default function RootLayout({
+export default async function RootLayout ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <SessionProvider session={session}>
       <body
         className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <NavBar />
+        <Toaster position="top-center" richColors/>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
-          </ThemeProvider>
+        </ThemeProvider>
       </body>
+      </SessionProvider>
     </html>
   );
 }

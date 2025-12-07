@@ -1,4 +1,8 @@
+import { auth } from "@/auth";
+import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
+import { signOut } from "@/auth";
+import ROUTES from "@/constants/route";
 
 export const metadata: Metadata = {
   title: "Dev Overflow",
@@ -9,10 +13,22 @@ export const metadata: Metadata = {
   },
 };
 
-const page = () => {
+const page = async () => {
+
+  const session = await auth();
+
+  console.log(session)
+
   return (
+
     <div>
       <h1 className='text-3xl text-light-500'>Welcome to the ultimate next js course</h1>
+      <form className="px-10 pt-[100px]" action={async () => {
+        "use server"
+        await signOut({redirectTo: ROUTES.SIGN_IN})
+      }}>
+        <Button type='submit'>Log out</Button>
+      </form>
     </div>
   )
 }
