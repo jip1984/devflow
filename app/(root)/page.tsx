@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import { signOut } from "@/auth";
 import ROUTES from "@/constants/route";
@@ -27,7 +26,7 @@ const page = async () => {
         "use server"
         await signOut({redirectTo: ROUTES.SIGN_IN})
       }}>
-        <Button type='submit'>Log out</Button>
+
       </form>
     </div>
   )
